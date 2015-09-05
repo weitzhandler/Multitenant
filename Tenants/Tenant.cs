@@ -20,16 +20,20 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
 
     public virtual TKey Id { get; set; }
 
+    /*
     [RegularExpression(@"[a-z0-9\-]+")]
     [StringLength(16, MinimumLength = 6)]
     public virtual string TenantName { get; set; }
+    */
 
     public virtual ICollection<TenantUser<TKey>> Users { get; set; } = new HashSet<TenantUser<TKey>>();
 
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
+      /*
       if (ReservedTenantNames.Contains(TenantName))
         yield return new ValidationResult($"The tenant name {TenantName} is reserved.");
+      */
 
       yield return ValidationResult.Success;
     }

@@ -4,33 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
-{
-  public class TenantUserStore : TenantUserStore<TenantIdentityDbContext>
-  {
-    public TenantUserStore(TenantIdentityDbContext context)
-      : base(context)
-    {
-    }
-  }
-
-  public class TenantUserStore<TContext> : TenantUserStore<TenantUser, IdentityRole, Tenant, TContext, TenantUserLogin, IdentityUserRole, IdentityUserClaim>
-    where TContext : TenantIdentityDbContext<TenantUser, IdentityRole, Tenant, string, TenantUserLogin, IdentityUserRole, IdentityUserClaim>
-  {
-    public TenantUserStore(TContext context)
-      : base(context)
-    {
-    }
-  }
-
-  public class TenantUserStore<TUser, TRole, TTenant, TContext, TUserLogin, TUserRole, TUserClaim>
-    : TenantUserStore<TUser, TRole, TTenant, TContext, string, TUserLogin, TUserRole, TUserClaim>
+{ 
+  public class TenantUserStore<TUser, TRole, TTenant, TContext> : TenantUserStore<TUser, TRole, TTenant, TContext, string, TenantUserLogin, IdentityUserRole<string>, IdentityUserClaim<string>>
     where TUser : TenantUser
-    where TRole : IdentityRole
+    where TRole : IdentityRole<string>
     where TTenant : Tenant
-    where TContext : TenantIdentityDbContext<TUser, TRole, TTenant, string, TUserLogin, TUserRole, TUserClaim>
-    where TUserLogin : TenantUserLogin, new()
-    where TUserRole : IdentityUserRole, new()
-    where TUserClaim : IdentityUserClaim, new()
+    where TContext : TenantIdentityDbContext<TUser, TRole, TTenant, string, TenantUserLogin, IdentityUserRole<string>, IdentityUserClaim<string>>
   {
     public TenantUserStore(TContext context)
       : base(context)

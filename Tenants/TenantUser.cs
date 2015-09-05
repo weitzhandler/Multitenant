@@ -21,12 +21,6 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
     public virtual TKey TenantId { get; set; }
 
     public virtual Tenant<TKey> Tenant { get; set; }
-
-    /// <summary>
-    /// Navigation property for users logins.
-    /// </summary>
-    public new ICollection<TenantUserLogin<TKey>> Logins { get; } = new HashSet<TenantUserLogin<TKey>>();
-
   }
 
   public class TenantUserValidator : TenantUserValidator<string>
