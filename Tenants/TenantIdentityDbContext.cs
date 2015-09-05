@@ -29,9 +29,6 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
       builder.Model.RemoveEntityType(builder.Entity<IdentityUser<TKey>>().Metadata);
       builder.Model.RemoveEntityType(builder.Entity<IdentityUserLogin<TKey>>().Metadata);
 
-      //builder.Entity<TenantUser>().BaseType<TenantUser<string>>();
-      //builder.Entity<Tenant>().BaseType<Tenant<string>>();
-
       builder.Entity<TUser>().BaseType<TenantUser<TKey>>();
       builder.Entity<TTenant>().BaseType<Tenant<TKey>>();
 
