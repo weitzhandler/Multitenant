@@ -11,7 +11,7 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
   {
     public TenantUser()
     {
-      Id = Guid.NewGuid().ToString();
+      Id = Guid.NewGuid().ToString();      
     }
   }
 

@@ -29,16 +29,11 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
       builder.Model.RemoveEntityType(builder.Entity<IdentityUser<TKey>>().Metadata);
       builder.Model.RemoveEntityType(builder.Entity<IdentityUserLogin<TKey>>().Metadata);
 
-      //builder.Entity<TenantUser<TKey>>().BaseType<IdentityUser<TKey>>();
-      //builder.Entity<TenantUserLogin<TKey>>().BaseType<IdentityUserLogin<TKey>>();
-      builder.Entity<TenantUser>().BaseType<TenantUser<string>>();
-      builder.Entity<Tenant>().BaseType<Tenant<string>>();
+      //builder.Entity<TenantUser>().BaseType<TenantUser<string>>();
+      //builder.Entity<Tenant>().BaseType<Tenant<string>>();
 
       builder.Entity<TUser>().BaseType<TenantUser<TKey>>();
       builder.Entity<TTenant>().BaseType<Tenant<TKey>>();
-
-      //builder.Entity<TTenant>().BaseType<TTenant>();
-      //builder.Entity<TenantUser<string>>().BaseType<TUser>();
 
       builder.Entity<TenantUser<TKey>>(b =>
       {
@@ -58,10 +53,10 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
 
         b.Property(u => u.TenantId).Required();
 
-        //b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId);
-        //b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId);
+        b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId);
+        b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId);
 
-        //b.Reference(u => u.Tenant);
+        //b.Reference(u => u.Tenant).InverseCollection(t => t.Users).ForeignKey(tu => tu.Id);        
       });
 
       builder.Entity<TRole>(b =>
@@ -74,14 +69,13 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
         b.Property(u => u.Name).MaxLength(256);
         b.Property(u => u.NormalizedName).MaxLength(256);
 
-        //b.Collection(r => r.Users).InverseReference().ForeignKey(ur => ur.RoleId);
-        //b.Collection(r => r.Claims).InverseReference().ForeignKey(rc => rc.RoleId);
+        b.Collection(r => r.Users).InverseReference().ForeignKey(ur => ur.RoleId);
+        b.Collection(r => r.Claims).InverseReference().ForeignKey(rc => rc.RoleId);
       });
 
       builder.Entity<Tenant<TKey>>(b =>
       {
         b.Key(t => t.Id).Name("PK_Tenant");
-        //b.Index(t => t.TenantName).Unique().IndexName("TenantNameIndex");
         b.ToTable("Tenants");
 
         //b.Collection(t => t.Users).InverseReference().ForeignKey(u => u.TenantId);

@@ -23,45 +23,6 @@ namespace App.Migrations
                     table.PrimaryKey("PK_Role", x => x.Id);
                 });
             migrationBuilder.CreateTable(
-                name: "RoleClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(isNullable: true),
-                    ClaimValue = table.Column<string>(isNullable: true),
-                    RoleId = table.Column<string>(isNullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleClaim", x => x.Id);
-                });
-            migrationBuilder.CreateTable(
-                name: "Claims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(isNullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(isNullable: true),
-                    ClaimValue = table.Column<string>(isNullable: true),
-                    UserId = table.Column<string>(isNullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserClaim", x => x.Id);
-                });
-            migrationBuilder.CreateTable(
-                name: "UserRoles",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(isNullable: false),
-                    RoleId = table.Column<string>(isNullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
-                });
-            migrationBuilder.CreateTable(
                 name: "Tenants",
                 columns: table => new
                 {
@@ -85,6 +46,25 @@ namespace App.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Login", x => new { x.LoginProvider, x.ProviderKey, x.UserId, x.TenantId });
+                });
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(isNullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(isNullable: true),
+                    ClaimValue = table.Column<string>(isNullable: true),
+                    RoleId = table.Column<string>(isNullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaim", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_IdentityRoleClaim<string>_ApplicationRole_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
                 });
             migrationBuilder.CreateTable(
                 name: "Users",
@@ -121,10 +101,45 @@ namespace App.Migrations
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id");
+                });
+            migrationBuilder.CreateTable(
+                name: "Claims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(isNullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
+                    ClaimType = table.Column<string>(isNullable: true),
+                    ClaimValue = table.Column<string>(isNullable: true),
+                    UserId = table.Column<string>(isNullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantUser<string>_Tenant<string>_TenantId",
-                        column: x => x.TenantId,
-                        principalTable: "Tenants",
+                        name: "FK_IdentityUserClaim<string>_TenantUser<string>_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
+                });
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(isNullable: false),
+                    RoleId = table.Column<string>(isNullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_IdentityUserRole<string>_ApplicationRole_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_IdentityUserRole<string>_TenantUser<string>_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id");
                 });
             migrationBuilder.CreateIndex(
@@ -149,12 +164,12 @@ namespace App.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable("Roles");
             migrationBuilder.DropTable("RoleClaims");
             migrationBuilder.DropTable("Claims");
             migrationBuilder.DropTable("UserRoles");
-            migrationBuilder.DropTable("Users");
             migrationBuilder.DropTable("Logins");
+            migrationBuilder.DropTable("Roles");
+            migrationBuilder.DropTable("Users");
             migrationBuilder.DropTable("Tenants");
         }
     }

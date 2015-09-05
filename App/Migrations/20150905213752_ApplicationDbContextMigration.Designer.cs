@@ -13,7 +13,7 @@ namespace App.Migrations
     {
         public override string Id
         {
-            get { return "20150905211951_ApplicationDbContextMigration"; }
+            get { return "20150905213752_ApplicationDbContextMigration"; }
         }
 
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -197,14 +197,6 @@ namespace App.Migrations
                     b.Annotation("Relational:DiscriminatorValue", "ApplicationTenant");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.Tenant.Tenant", b =>
-                {
-                    b.BaseType("Microsoft.AspNet.Identity.EntityFramework.Tenant.Tenant<string>");
-
-
-                    b.Annotation("Relational:DiscriminatorValue", "Tenant");
-                });
-
             modelBuilder.Entity("App.Models.ApplicationUser", b =>
                 {
                     b.BaseType("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>");
@@ -213,12 +205,29 @@ namespace App.Migrations
                     b.Annotation("Relational:DiscriminatorValue", "ApplicationUser");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser", b =>
+            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityRoleClaim<string>", b =>
                 {
-                    b.BaseType("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>");
+                    b.Reference("App.Models.ApplicationRole")
+                        .InverseCollection()
+                        .ForeignKey("RoleId");
+                });
 
+            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
+                {
+                    b.Reference("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>")
+                        .InverseCollection()
+                        .ForeignKey("UserId");
+                });
 
-                    b.Annotation("Relational:DiscriminatorValue", "TenantUser");
+            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
+                {
+                    b.Reference("App.Models.ApplicationRole")
+                        .InverseCollection()
+                        .ForeignKey("RoleId");
+
+                    b.Reference("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>")
+                        .InverseCollection()
+                        .ForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>", b =>
@@ -229,10 +238,6 @@ namespace App.Migrations
                 });
 
             modelBuilder.Entity("App.Models.ApplicationUser", b =>
-                {
-                });
-
-            modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser", b =>
                 {
                 });
         }
