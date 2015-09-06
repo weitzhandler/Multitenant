@@ -50,24 +50,24 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
 
         b.Property(u => u.TenantId).Required();
 
-        b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId);
-        b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId);
+        b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId).ConstraintName("FK_User_Claims");
+        b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId).ConstraintName("FK_User_Roles");
 
-        //b.Reference(u => u.Tenant).InverseCollection(t => t.Users).ForeignKey(tu => tu.Id);        
+        b.Reference(u => u.Tenant).InverseCollection(t => t.Users).ForeignKey(tu => tu.TenantId).ConstraintName("FK_User_Tenant");
       });
 
       builder.Entity<TRole>(b =>
       {
         b.Key(r => r.Id).Name("PK_Role");
-        b.Index(r => r.NormalizedName).Name("RoleNameIndex");
+        b.Index(r => r.Name).Name("RoleNameIndex");
         b.ToTable("Roles");
         b.Property(r => r.ConcurrencyStamp).ConcurrencyToken();
 
         b.Property(u => u.Name).MaxLength(256);
         b.Property(u => u.NormalizedName).MaxLength(256);
 
-        b.Collection(r => r.Users).InverseReference().ForeignKey(ur => ur.RoleId);
-        b.Collection(r => r.Claims).InverseReference().ForeignKey(rc => rc.RoleId);
+        b.Collection(r => r.Users).InverseReference().ForeignKey(ur => ur.RoleId).ConstraintName("FK_Role_Users");
+        b.Collection(r => r.Claims).InverseReference().ForeignKey(rc => rc.RoleId).ConstraintName("FK_Role_Claims");
       });
 
       builder.Entity<Tenant<TKey>>(b =>
@@ -75,7 +75,7 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
         b.Key(t => t.Id).Name("PK_Tenant");
         b.ToTable("Tenants");
 
-        //b.Collection(t => t.Users).InverseReference().ForeignKey(u => u.TenantId);
+        b.Collection(t => t.Users).InverseReference(u => u.Tenant).ForeignKey(u => u.TenantId).ConstraintName("FK_Tenant_TenantUser");
       });
 
       builder.Entity<IdentityUserClaim<TKey>>(b =>

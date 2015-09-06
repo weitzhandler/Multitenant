@@ -61,7 +61,7 @@ namespace App.Migrations
                 {
                     table.PrimaryKey("PK_RoleClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityRoleClaim<string>_ApplicationRole_RoleId",
+                        name: "FK_Role_Claims",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id");
@@ -92,12 +92,12 @@ namespace App.Migrations
                 {
                     table.PrimaryKey("PK_TenantUser", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TenantUser<string>_Tenant<string>_TenantId",
+                        name: "FK_Tenant_TenantUser",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_TenantUser<string>_Tenant<string>_TenantId",
+                        name: "FK_Tenant_TenantUser",
                         column: x => x.TenantId,
                         principalTable: "Tenants",
                         principalColumn: "Id");
@@ -116,7 +116,7 @@ namespace App.Migrations
                 {
                     table.PrimaryKey("PK_UserClaim", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_IdentityUserClaim<string>_TenantUser<string>_UserId",
+                        name: "FK_User_Claims",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -132,12 +132,12 @@ namespace App.Migrations
                 {
                     table.PrimaryKey("PK_UserRole", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_IdentityUserRole<string>_ApplicationRole_RoleId",
+                        name: "FK_Role_Users",
                         column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_IdentityUserRole<string>_TenantUser<string>_UserId",
+                        name: "FK_User_Roles",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id");
@@ -145,7 +145,7 @@ namespace App.Migrations
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "Roles",
-                column: "NormalizedName");
+                column: "Name");
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
                 table: "Users",

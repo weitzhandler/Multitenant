@@ -33,7 +33,7 @@ namespace App.Migrations
                     b.Key("Id")
                         .Annotation("Relational:Name", "PK_Role");
 
-                    b.Index("NormalizedName")
+                    b.Index("Name")
                         .Annotation("Relational:Name", "RoleNameIndex");
 
                     b.Annotation("Relational:TableName", "Roles");
@@ -204,32 +204,37 @@ namespace App.Migrations
                 {
                     b.Reference("App.Models.ApplicationRole")
                         .InverseCollection()
-                        .ForeignKey("RoleId");
+                        .ForeignKey("RoleId")
+                        .Annotation("Relational:Name", "FK_Role_Claims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserClaim<string>", b =>
                 {
                     b.Reference("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>")
                         .InverseCollection()
-                        .ForeignKey("UserId");
+                        .ForeignKey("UserId")
+                        .Annotation("Relational:Name", "FK_User_Claims");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.IdentityUserRole<string>", b =>
                 {
                     b.Reference("App.Models.ApplicationRole")
                         .InverseCollection()
-                        .ForeignKey("RoleId");
+                        .ForeignKey("RoleId")
+                        .Annotation("Relational:Name", "FK_Role_Users");
 
                     b.Reference("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>")
                         .InverseCollection()
-                        .ForeignKey("UserId");
+                        .ForeignKey("UserId")
+                        .Annotation("Relational:Name", "FK_User_Roles");
                 });
 
             modelBuilder.Entity("Microsoft.AspNet.Identity.EntityFramework.Tenant.TenantUser<string>", b =>
                 {
                     b.Reference("Microsoft.AspNet.Identity.EntityFramework.Tenant.Tenant<string>")
                         .InverseCollection()
-                        .ForeignKey("TenantId");
+                        .ForeignKey("TenantId")
+                        .Annotation("Relational:Name", "FK_Tenant_TenantUser");
                 });
 
             modelBuilder.Entity("App.Models.ApplicationUser", b =>
