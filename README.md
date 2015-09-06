@@ -1,4 +1,4 @@
-# Multitenancy in ASP.NET 5 and EF7 with Identity 3.
+**Multitenancy in ASP.NET 5 and EF7 with Identity 3**
 
 This repo will attempt to support multi-Tenancy based on the existing [ASP.NET 5 Identity](https://github.com/aspnet/Identity), with EF7.
 
