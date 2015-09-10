@@ -32,29 +32,32 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
       builder.Entity<TUser>().BaseType<TenantUser<TKey>>();
       builder.Entity<TTenant>().BaseType<Tenant<TKey>>();
 
-      builder.Entity<TenantUser<TKey>>(b =>
-      {
-        b.Key(u => u.Id).Name("PK_TenantUser");
-        b.Index(u => u.NormalizedUserName).Unique().Name("UserNameIndex");
-        b.Index(u => u.NormalizedEmail).Name("EmailIndex");
-        b.Index(u => new { u.UserName, u.TenantId }).Unique().Name("UserTenantIndex");
-        b.ToTable("Users");
+    builder.Entity<TenantUser<TKey>>(b =>
+    {
+      b.Key(u => u.Id).Name("PK_TenantUser");
+      b.Index(u => u.NormalizedUserName).Unique().Name("UserNameIndex");
+      b.Index(u => u.NormalizedEmail).Name("EmailIndex");
+      b.Index(u => new { u.UserName, u.TenantId }).Unique().Name("UserTenantIndex");
+      b.ToTable("Users");
 
-        b.Property(u => u.ConcurrencyStamp).ConcurrencyToken();
+      b.Property(u => u.ConcurrencyStamp).ConcurrencyToken();
 
-        b.Property(u => u.UserName).MaxLength(16);
-        b.Property(u => u.NormalizedUserName).MaxLength(16);
+      b.Property(u => u.UserName).MaxLength(16);
+      b.Property(u => u.NormalizedUserName).MaxLength(16);
 
-        b.Property(u => u.Email).MaxLength(256);
-        b.Property(u => u.NormalizedEmail).MaxLength(256);
+      b.Property(u => u.Email).MaxLength(256);
+      b.Property(u => u.NormalizedEmail).MaxLength(256);
 
-        b.Property(u => u.TenantId).Required();
+      b.Property(u => u.TenantId).Required();
 
-        b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId).ConstraintName("FK_User_Claims");
-        b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId).ConstraintName("FK_User_Roles");
+      b.Collection(u => u.Claims).InverseReference().ForeignKey(uc => uc.UserId).ConstraintName("FK_User_Claims");
+      b.Collection(u => u.Roles).InverseReference().ForeignKey(ur => ur.UserId).ConstraintName("FK_User_Roles");
 
-        b.Reference(u => u.Tenant).InverseCollection(t => t.Users).ForeignKey(tu => tu.TenantId).ConstraintName("FK_User_Tenant");
-      });
+      b.Reference(u => u.Tenant)
+       .InverseCollection(t => t.Users)
+       .ForeignKey(tu => tu.TenantId)
+       .ConstraintName("FK_User_Tenant");
+    });
 
       builder.Entity<TRole>(b =>
       {
@@ -66,17 +69,27 @@ namespace Microsoft.AspNet.Identity.EntityFramework.Tenant
         b.Property(u => u.Name).MaxLength(256);
         b.Property(u => u.NormalizedName).MaxLength(256);
 
-        b.Collection(r => r.Users).InverseReference().ForeignKey(ur => ur.RoleId).ConstraintName("FK_Role_Users");
-        b.Collection(r => r.Claims).InverseReference().ForeignKey(rc => rc.RoleId).ConstraintName("FK_Role_Claims");
+        b.Collection(r => r.Users)
+         .InverseReference()
+         .ForeignKey(ur => ur.RoleId)
+         .ConstraintName("FK_Role_Users");
+
+        b.Collection(r => r.Claims)
+         .InverseReference()
+         .ForeignKey(rc => rc.RoleId)
+         .ConstraintName("FK_Role_Claims");
       });
 
-      builder.Entity<Tenant<TKey>>(b =>
-      {
-        b.Key(t => t.Id).Name("PK_Tenant");
-        b.ToTable("Tenants");
+    builder.Entity<Tenant<TKey>>(b =>
+    {
+      b.Key(t => t.Id).Name("PK_Tenant");
+      b.ToTable("Tenants");
 
-        b.Collection(t => t.Users).InverseReference(u => u.Tenant).ForeignKey(u => u.TenantId).ConstraintName("FK_Tenant_TenantUser");
-      });
+      b.Collection(t => t.Users)
+       .InverseReference(u => u.Tenant)
+       .ForeignKey(u => u.TenantId)
+       .ConstraintName("FK_Tenant_TenantUser");
+    });
 
       builder.Entity<IdentityUserClaim<TKey>>(b =>
       {

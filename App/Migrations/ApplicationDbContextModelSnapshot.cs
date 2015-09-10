@@ -14,7 +14,7 @@ namespace App.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .Annotation("ProductVersion", "7.0.0-beta7-15540")
+                .Annotation("ProductVersion", "7.0.0-beta8-15649")
                 .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn);
 
             modelBuilder.Entity("App.Models.ApplicationRole", b =>

@@ -11,6 +11,7 @@ using Microsoft.Data.Entity;
 using App.Models;
 using App.Services;
 using App.ViewModels.Account;
+using Microsoft.AspNet.Mvc.ActionResults;
 
 namespace App.Controllers
 {

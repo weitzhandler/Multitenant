@@ -5,7 +5,7 @@ using Microsoft.Data.Entity.SqlServer.Metadata;
 
 namespace App.Migrations
 {
-    public partial class ApplicationDbContextMigration : Migration
+    public partial class InitialModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,10 +13,10 @@ namespace App.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(isNullable: false),
-                    ConcurrencyStamp = table.Column<string>(isNullable: true),
-                    Name = table.Column<string>(isNullable: true),
-                    NormalizedName = table.Column<string>(isNullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    NormalizedName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -26,8 +26,8 @@ namespace App.Migrations
                 name: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<string>(isNullable: false),
-                    Discriminator = table.Column<string>(isNullable: false)
+                    Id = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,11 +37,11 @@ namespace App.Migrations
                 name: "Logins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(isNullable: false),
-                    ProviderKey = table.Column<string>(isNullable: false),
-                    UserId = table.Column<string>(isNullable: false),
-                    TenantId = table.Column<string>(isNullable: false),
-                    ProviderDisplayName = table.Column<string>(isNullable: true)
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(nullable: false),
+                    TenantId = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -51,11 +51,11 @@ namespace App.Migrations
                 name: "RoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(isNullable: true),
-                    ClaimValue = table.Column<string>(isNullable: true),
-                    RoleId = table.Column<string>(isNullable: true)
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true),
+                    RoleId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -70,32 +70,27 @@ namespace App.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(isNullable: false),
-                    AccessFailedCount = table.Column<int>(isNullable: false),
-                    ConcurrencyStamp = table.Column<string>(isNullable: true),
-                    Discriminator = table.Column<string>(isNullable: false),
-                    Email = table.Column<string>(isNullable: true),
-                    EmailConfirmed = table.Column<bool>(isNullable: false),
-                    LockoutEnabled = table.Column<bool>(isNullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(isNullable: true),
-                    NormalizedEmail = table.Column<string>(isNullable: true),
-                    NormalizedUserName = table.Column<string>(isNullable: true),
-                    PasswordHash = table.Column<string>(isNullable: true),
-                    PhoneNumber = table.Column<string>(isNullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(isNullable: false),
-                    SecurityStamp = table.Column<string>(isNullable: true),
-                    TenantId = table.Column<string>(isNullable: false),
-                    TwoFactorEnabled = table.Column<bool>(isNullable: false),
-                    UserName = table.Column<string>(isNullable: true)
+                    Id = table.Column<string>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Email = table.Column<string>(nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    NormalizedEmail = table.Column<string>(nullable: true),
+                    NormalizedUserName = table.Column<string>(nullable: true),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    TenantId = table.Column<string>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    UserName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TenantUser", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Tenant_TenantUser",
-                        column: x => x.TenantId,
-                        principalTable: "Tenants",
-                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Tenant_TenantUser",
                         column: x => x.TenantId,
@@ -106,11 +101,11 @@ namespace App.Migrations
                 name: "Claims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(isNullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerIdentityStrategy.IdentityColumn),
-                    ClaimType = table.Column<string>(isNullable: true),
-                    ClaimValue = table.Column<string>(isNullable: true),
-                    UserId = table.Column<string>(isNullable: true)
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -125,8 +120,8 @@ namespace App.Migrations
                 name: "UserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(isNullable: false),
-                    RoleId = table.Column<string>(isNullable: false)
+                    UserId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -154,12 +149,12 @@ namespace App.Migrations
                 name: "UserNameIndex",
                 table: "Users",
                 column: "NormalizedUserName",
-                isUnique: true);
+                unique: true);
             migrationBuilder.CreateIndex(
                 name: "UserTenantIndex",
                 table: "Users",
                 columns: new[] { "UserName", "TenantId" },
-                isUnique: true);
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
